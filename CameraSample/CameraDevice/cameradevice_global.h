@@ -1,0 +1,12 @@
+#ifndef CAMERADEVICE_GLOBAL_H
+#define CAMERADEVICE_GLOBAL_H
+
+#include <QtCore/qglobal.h>
+
+#if defined(CAMERADEVICE_LIBRARY)
+#  define CAMERADEVICESHARED_EXPORT Q_DECL_EXPORT
+#else
+#  define CAMERADEVICESHARED_EXPORT
+#endif
+
+#endif // CAMERADEVICE_GLOBAL_H
