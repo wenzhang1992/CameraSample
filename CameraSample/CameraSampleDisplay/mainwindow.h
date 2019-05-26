@@ -1,13 +1,18 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QMainWindow>
 #include "../CameraDevice/CameraDevice.h"
-#include <QCamera>
 #include "CycleQueue.h"
-#include "showwidget.h"
+#include "ImageProcessWarpper.h"
 #include "PerformanceTimer.h"
-namespace Ui {
+#include "showwidget.h"
+#include <QCamera>
+#include <QFile>
+#include <QMainWindow>
+#include <QObject>
+#include <QThread>
+namespace Ui
+{
 class MainWindow;
 }
 
@@ -15,14 +20,15 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
-public:
+  public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-    void PushImageData(unsigned char *Buffer,int size);
+    void PushImageData(unsigned char *Buffer, int size);
 
     void DisplayImage();
-private:
+
+  private:
     Ui::MainWindow *ui;
 
     CameraDevice *m_pCameraDevice;
@@ -31,11 +37,29 @@ private:
 
     void SetImageProcessCallback();
 
-    CCycleQueue *m_cImageBuffer=nullptr;
+    CCycleQueue *m_cImageBufferRGB32 = nullptr;
 
-    PerformanceTimer *m_displayTimer=nullptr;
+    CCycleQueue *m_cImageBufferRGB24 = nullptr;
 
-    unsigned char *m_ucImageData=nullptr;
+    PerformanceTimer *m_displayTimer = nullptr;
+
+    unsigned char *m_ucImageDataRGB32 = nullptr;
+
+    unsigned char *m_ucImageDataRGB24 = nullptr;
+
+    QThread *m_qtImageProcessThread = nullptr;
+
+    ImageProcessWarpper *m_imageProcessWarpper = nullptr;
+
+    void ConfigImageProcess();
+
+    QString m_qsFilePath = "C:/Users/ALEX/Desktop/RecordFile";
+
+    QFile *m_recordFile = nullptr;
+  signals:
+    void sig_startRecord(QString filename);
+  private slots:
+    void on_recordButton_clicked();
 };
 
 #endif // MAINWINDOW_H

@@ -28,11 +28,11 @@
 
 #include <stdint.h>
 
-#include "libavutil/common.h"
-#include "libavutil/dict.h"
-#include "libavutil/log.h"
+#include "./Include/libavutil/common.h"
+#include "./Include/libavutil/dict.h"
+#include "./Include/libavutil/log.h"
 
-#include "libavformat/version.h"
+#include "./Include/libavformat/version.h"
 
 /**
  * Seeking works like for a local file.
@@ -42,7 +42,7 @@
 /**
  * Seeking by timestamp with avio_seek_time() is possible.
  */
-#define AVIO_SEEKABLE_TIME   (1 << 1)
+#define AVIO_SEEKABLE_TIME (1 << 1)
 
 /**
  * Callback for checking whether to abort blocking functions.
@@ -55,15 +55,17 @@
  * new elements have been added after this struct in AVFormatContext
  * or AVIOContext.
  */
-typedef struct AVIOInterruptCB {
-    int (*callback)(void*);
+typedef struct AVIOInterruptCB
+{
+    int (*callback)(void *);
     void *opaque;
 } AVIOInterruptCB;
 
 /**
  * Directory entry types.
  */
-enum AVIODirEntryType {
+enum AVIODirEntryType
+{
     AVIO_ENTRY_UNKNOWN,
     AVIO_ENTRY_BLOCK_DEVICE,
     AVIO_ENTRY_CHARACTER_DEVICE,
@@ -83,24 +85,26 @@ enum AVIODirEntryType {
  * Only name and type fields are guaranteed be set.
  * Rest of fields are protocol or/and platform dependent and might be unknown.
  */
-typedef struct AVIODirEntry {
-    char *name;                           /**< Filename */
-    int type;                             /**< Type of the entry */
-    int utf8;                             /**< Set to 1 when name is encoded with UTF-8, 0 otherwise.
+typedef struct AVIODirEntry
+{
+    char *name;                      /**< Filename */
+    int type;                        /**< Type of the entry */
+    int utf8;                        /**< Set to 1 when name is encoded with UTF-8, 0 otherwise.
                                                Name can be encoded with UTF-8 even though 0 is set. */
-    int64_t size;                         /**< File size in bytes, -1 if unknown. */
-    int64_t modification_timestamp;       /**< Time of last modification in microseconds since unix
+    int64_t size;                    /**< File size in bytes, -1 if unknown. */
+    int64_t modification_timestamp;  /**< Time of last modification in microseconds since unix
                                                epoch, -1 if unknown. */
-    int64_t access_timestamp;             /**< Time of last access in microseconds since unix epoch,
+    int64_t access_timestamp;        /**< Time of last access in microseconds since unix epoch,
                                                -1 if unknown. */
-    int64_t status_change_timestamp;      /**< Time of last status change in microseconds since unix
+    int64_t status_change_timestamp; /**< Time of last status change in microseconds since unix
                                                epoch, -1 if unknown. */
-    int64_t user_id;                      /**< User ID of owner, -1 if unknown. */
-    int64_t group_id;                     /**< Group ID of owner, -1 if unknown. */
-    int64_t filemode;                     /**< Unix file mode, -1 if unknown. */
+    int64_t user_id;                 /**< User ID of owner, -1 if unknown. */
+    int64_t group_id;                /**< Group ID of owner, -1 if unknown. */
+    int64_t filemode;                /**< Unix file mode, -1 if unknown. */
 } AVIODirEntry;
 
-typedef struct AVIODirContext {
+typedef struct AVIODirContext
+{
     struct URLContext *url_context;
 } AVIODirContext;
 
@@ -108,7 +112,8 @@ typedef struct AVIODirContext {
  * Different data types that can be returned via the AVIO
  * write_data_type callback.
  */
-enum AVIODataMarkerType {
+enum AVIODataMarkerType
+{
     /**
      * Header data; this needs to be present for the stream to be decodeable.
      */
@@ -158,7 +163,8 @@ enum AVIODataMarkerType {
  *       when implementing custom I/O. Normally these are set to the
  *       function pointers specified in avio_alloc_context()
  */
-typedef struct AVIOContext {
+typedef struct AVIOContext
+{
     /**
      * A class for private options.
      *
@@ -235,14 +241,14 @@ typedef struct AVIOContext {
     int (*read_packet)(void *opaque, uint8_t *buf, int buf_size);
     int (*write_packet)(void *opaque, uint8_t *buf, int buf_size);
     int64_t (*seek)(void *opaque, int64_t offset, int whence);
-    int64_t pos;            /**< position in the file of the current buffer */
-    int eof_reached;        /**< true if eof reached */
-    int write_flag;         /**< true if open for writing */
+    int64_t pos;     /**< position in the file of the current buffer */
+    int eof_reached; /**< true if eof reached */
+    int write_flag;  /**< true if open for writing */
     int max_packet_size;
     unsigned long checksum;
     unsigned char *checksum_ptr;
     unsigned long (*update_checksum)(unsigned long checksum, const uint8_t *buf, unsigned int size);
-    int error;              /**< contains the error code or 0 if no error happened */
+    int error; /**< contains the error code or 0 if no error happened */
     /**
      * Pause or resume playback for network streaming protocols - e.g. MMS.
      */
@@ -460,13 +466,13 @@ void avio_free_directory_entry(AVIODirEntry **entry);
  * @return Allocated AVIOContext or NULL on failure.
  */
 AVIOContext *avio_alloc_context(
-                  unsigned char *buffer,
-                  int buffer_size,
-                  int write_flag,
-                  void *opaque,
-                  int (*read_packet)(void *opaque, uint8_t *buf, int buf_size),
-                  int (*write_packet)(void *opaque, uint8_t *buf, int buf_size),
-                  int64_t (*seek)(void *opaque, int64_t offset, int whence));
+    unsigned char *buffer,
+    int buffer_size,
+    int write_flag,
+    void *opaque,
+    int (*read_packet)(void *opaque, uint8_t *buf, int buf_size),
+    int (*write_packet)(void *opaque, uint8_t *buf, int buf_size),
+    int64_t (*seek)(void *opaque, int64_t offset, int whence));
 
 /**
  * Free the supplied IO context and everything associated with it.
@@ -608,15 +614,15 @@ int avio_read_partial(AVIOContext *s, unsigned char *buf, int size);
  * @note return 0 if EOF, so you cannot use it if EOF handling is
  *       necessary
  */
-int          avio_r8  (AVIOContext *s);
+int avio_r8(AVIOContext *s);
 unsigned int avio_rl16(AVIOContext *s);
 unsigned int avio_rl24(AVIOContext *s);
 unsigned int avio_rl32(AVIOContext *s);
-uint64_t     avio_rl64(AVIOContext *s);
+uint64_t avio_rl64(AVIOContext *s);
 unsigned int avio_rb16(AVIOContext *s);
 unsigned int avio_rb24(AVIOContext *s);
 unsigned int avio_rb32(AVIOContext *s);
-uint64_t     avio_rb64(AVIOContext *s);
+uint64_t avio_rb64(AVIOContext *s);
 /**
  * @}
  */
@@ -644,16 +650,15 @@ int avio_get_str(AVIOContext *pb, int maxlen, char *buf, int buflen);
 int avio_get_str16le(AVIOContext *pb, int maxlen, char *buf, int buflen);
 int avio_get_str16be(AVIOContext *pb, int maxlen, char *buf, int buflen);
 
-
 /**
  * @name URL open modes
  * The flags argument to avio_open must be one of the following
  * constants, optionally ORed with other flags.
  * @{
  */
-#define AVIO_FLAG_READ  1                                      /**< read-only */
-#define AVIO_FLAG_WRITE 2                                      /**< write-only */
-#define AVIO_FLAG_READ_WRITE (AVIO_FLAG_READ|AVIO_FLAG_WRITE)  /**< read-write pseudo flag */
+#define AVIO_FLAG_READ 1                                        /**< read-only */
+#define AVIO_FLAG_WRITE 2                                       /**< write-only */
+#define AVIO_FLAG_READ_WRITE (AVIO_FLAG_READ | AVIO_FLAG_WRITE) /**< read-write pseudo flag */
 /**
  * @}
  */
@@ -742,7 +747,6 @@ int avio_close(AVIOContext *s);
  */
 int avio_closep(AVIOContext **s);
 
-
 /**
  * Open a write only memory stream.
  *
@@ -794,7 +798,7 @@ const char *avio_enum_protocols(void **opaque, int output);
  * @param h     IO context from which to call the read_pause function pointer
  * @param pause 1 for pause, 0 for resume
  */
-int     avio_pause(AVIOContext *h, int pause);
+int avio_pause(AVIOContext *h, int pause);
 
 /**
  * Seek to a given timestamp relative to some component stream.

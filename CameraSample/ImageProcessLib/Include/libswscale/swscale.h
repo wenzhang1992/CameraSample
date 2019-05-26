@@ -29,9 +29,9 @@
 
 #include <stdint.h>
 
-#include "libavutil/avutil.h"
-#include "libavutil/log.h"
-#include "libavutil/pixfmt.h"
+#include "./Include/libavutil/avutil.h"
+#include "./Include/libavutil/log.h"
+#include "./Include/libavutil/pixfmt.h"
 #include "version.h"
 
 /**
@@ -55,45 +55,45 @@ const char *swscale_configuration(void);
 const char *swscale_license(void);
 
 /* values for the flags, the stuff on the command line is different */
-#define SWS_FAST_BILINEAR     1
-#define SWS_BILINEAR          2
-#define SWS_BICUBIC           4
-#define SWS_X                 8
-#define SWS_POINT          0x10
-#define SWS_AREA           0x20
-#define SWS_BICUBLIN       0x40
-#define SWS_GAUSS          0x80
-#define SWS_SINC          0x100
-#define SWS_LANCZOS       0x200
-#define SWS_SPLINE        0x400
+#define SWS_FAST_BILINEAR 1
+#define SWS_BILINEAR 2
+#define SWS_BICUBIC 4
+#define SWS_X 8
+#define SWS_POINT 0x10
+#define SWS_AREA 0x20
+#define SWS_BICUBLIN 0x40
+#define SWS_GAUSS 0x80
+#define SWS_SINC 0x100
+#define SWS_LANCZOS 0x200
+#define SWS_SPLINE 0x400
 
-#define SWS_SRC_V_CHR_DROP_MASK     0x30000
-#define SWS_SRC_V_CHR_DROP_SHIFT    16
+#define SWS_SRC_V_CHR_DROP_MASK 0x30000
+#define SWS_SRC_V_CHR_DROP_SHIFT 16
 
-#define SWS_PARAM_DEFAULT           123456
+#define SWS_PARAM_DEFAULT 123456
 
-#define SWS_PRINT_INFO              0x1000
+#define SWS_PRINT_INFO 0x1000
 
 //the following 3 flags are not completely implemented
 //internal chrominance subsampling info
-#define SWS_FULL_CHR_H_INT    0x2000
+#define SWS_FULL_CHR_H_INT 0x2000
 //input subsampling info
-#define SWS_FULL_CHR_H_INP    0x4000
-#define SWS_DIRECT_BGR        0x8000
-#define SWS_ACCURATE_RND      0x40000
-#define SWS_BITEXACT          0x80000
-#define SWS_ERROR_DIFFUSION  0x800000
+#define SWS_FULL_CHR_H_INP 0x4000
+#define SWS_DIRECT_BGR 0x8000
+#define SWS_ACCURATE_RND 0x40000
+#define SWS_BITEXACT 0x80000
+#define SWS_ERROR_DIFFUSION 0x800000
 
 #define SWS_MAX_REDUCE_CUTOFF 0.002
 
-#define SWS_CS_ITU709         1
-#define SWS_CS_FCC            4
-#define SWS_CS_ITU601         5
-#define SWS_CS_ITU624         5
-#define SWS_CS_SMPTE170M      5
-#define SWS_CS_SMPTE240M      7
-#define SWS_CS_DEFAULT        5
-#define SWS_CS_BT2020         9
+#define SWS_CS_ITU709 1
+#define SWS_CS_FCC 4
+#define SWS_CS_ITU601 5
+#define SWS_CS_ITU624 5
+#define SWS_CS_SMPTE170M 5
+#define SWS_CS_SMPTE240M 7
+#define SWS_CS_DEFAULT 5
+#define SWS_CS_BT2020 9
 
 /**
  * Return a pointer to yuv<->rgb coefficients for the given colorspace
@@ -106,13 +106,15 @@ const int *sws_getCoefficients(int colorspace);
 
 // when used for filters they must have an odd number of elements
 // coeffs cannot be shared between vectors
-typedef struct SwsVector {
-    double *coeff;              ///< pointer to the list of coefficients
-    int length;                 ///< number of coefficients in the vector
+typedef struct SwsVector
+{
+    double *coeff; ///< pointer to the list of coefficients
+    int length;    ///< number of coefficients in the vector
 } SwsVector;
 
 // vectors can be shared
-typedef struct SwsFilter {
+typedef struct SwsFilter
+{
     SwsVector *lumH;
     SwsVector *lumV;
     SwsVector *chrH;
@@ -153,8 +155,7 @@ struct SwsContext *sws_alloc_context(void);
  * @return zero or positive value on success, a negative value on
  * error
  */
-av_warn_unused_result
-int sws_init_context(struct SwsContext *sws_context, SwsFilter *srcFilter, SwsFilter *dstFilter);
+av_warn_unused_result int sws_init_context(struct SwsContext *sws_context, SwsFilter *srcFilter, SwsFilter *dstFilter);
 
 /**
  * Free the swscaler context swsContext.

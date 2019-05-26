@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1047</width>
-    <height>695</height>
+    <width>958</width>
+    <height>643</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,9 +19,22 @@
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>1021</width>
-      <height>671</height>
+      <width>941</width>
+      <height>581</height>
      </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="recordButton">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>610</y>
+      <width>80</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Record</string>
     </property>
    </widget>
   </widget>

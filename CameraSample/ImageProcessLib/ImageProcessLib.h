@@ -7,9 +7,11 @@ extern "C"
 {
 #include "./Include/libavcodec/avcodec.h"
 #include "./Include/libavformat/avformat.h"
+#include "./Include/libavutil/avutil.h"
 #include "./Include/libavutil/imgutils.h"
 #include "./Include/libswscale/swscale.h"
 }
+
 static int Table_fv1[256] = {-180, -179, -177, -176, -174, -173, -172, -170, -169, -167, -166, -165,
                              -163, -162, -160, -159, -158, -156, -155, -153, -152, -151, -149, -148,
                              -146, -145, -144, -142, -141, -139, -138, -137, -135, -134, -132, -131,
@@ -89,6 +91,8 @@ class IMAGEPROCESSLIBSHARED_EXPORT ImageConvert
      *     height:图像高度
      */
     static bool YV12ToRGB24_Table(unsigned char *pYUV, unsigned char *pBGR24, int width, int height);
+
+    static bool RGB24ToYV12(unsigned char *pRGB, unsigned char *pYUV, int width, int height);
 };
 
 class IMAGEPROCESSLIBSHARED_EXPORT ImageProcessLib
@@ -97,9 +101,15 @@ class IMAGEPROCESSLIBSHARED_EXPORT ImageProcessLib
   public:
     ImageProcessLib();
 
-    bool InitLib(const char *filename, int width, int height);
+    bool InitLib(char *filename, int width, int height);
+
+    void EncodeFrame(uint8_t *inputData);
+
+    void Uninit();
 
   private:
+    int FlushEncoder(AVFormatContext *fmt_ctx, unsigned int stream_index);
+    char *m_cfileName;
     AVFormatContext *m_pFormatCtx = nullptr;
     AVOutputFormat *m_pOutputFmt = nullptr;
     AVStream *m_pAVStream = nullptr;

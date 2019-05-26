@@ -28,7 +28,8 @@ SOURCES += \
         mainwindow.cpp \
     CycleQueue.cpp \
     showwidget.cpp \
-    PerformanceTimer.cpp
+    PerformanceTimer.cpp \
+    ImageProcessWarpper.cpp
 
 CONFIG(debug,debug|release){
     DESTDIR =$$PWD/../../xdebug
@@ -39,12 +40,14 @@ HEADERS += \
     ../CameraDevice/CameraDevice.h \
     CycleQueue.h \
     showwidget.h \
-    PerformanceTimer.h
+    PerformanceTimer.h \
+    ../ImageProcessLib/ImageProcessLib.h \
+    ImageProcessWarpper.h
 
 FORMS += \
         mainwindow.ui
 
 win32: LIBS += -L$$PWD/../../xdebug/ -lCameraDevice
-
+win32: LIBS += -L$$PWD/../../xdebug/ -lImageProcessLib
 INCLUDEPATH += $$PWD/../../xdebug
 DEPENDPATH += $$PWD/../../xdebug
